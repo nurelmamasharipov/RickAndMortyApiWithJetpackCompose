@@ -1,5 +1,7 @@
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,27 +26,23 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.example.rickandmortyapiwithjetpackcompose.data.dto.character.CharacterResponseDto
+import com.example.rickandmortyapiwithjetpackcompose.data.local.FavoriteCharacter
 import com.example.rickandmortyapiwithjetpackcompose.ui.screens.character.CharactersViewModel
+import com.example.rickandmortyapiwithjetpackcompose.ui.screens.favorite.FavoriteViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun CharacterScreen(
     navController: NavHostController,
-    viewModel: CharactersViewModel = koinViewModel()
+    viewModel: CharactersViewModel = koinViewModel(),
+    favoriteViewModel: FavoriteViewModel
 ) {
 
     val characters = remember { mutableStateOf<List<CharacterResponseDto.Character>>(emptyList()) }
     val isLoading = remember { mutableStateOf(true) }
 
     LaunchedEffect(Unit) {
-        try {
-            val result = viewModel.fetchAllCharacters()
-            characters.value = result
-        } catch (e: Exception) {
-            characters.value = emptyList()
-        } finally {
-            isLoading.value = false
-        }
+        viewModel.fetchAllCharacters()
     }
 
     if (isLoading.value) {
@@ -58,20 +56,32 @@ fun CharacterScreen(
     } else {
         LazyColumn {
             items(characters.value) { character ->
-                CharacterItem(character = character) {
+                CharacterItem(character = character, onClick = {
                     navController.navigate("character_detail/${character.id}")
-                }
+                }, onLongClick = {
+                    val favoriteCharacter = FavoriteCharacter(
+                        id = character.id,
+                        name = character.name,
+                        species = character.species,
+                        image = character.image
+                    )
+                    favoriteViewModel.addCharacterToFavorites(favoriteCharacter)
+                })
             }
         }
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun CharacterItem(character: CharacterResponseDto.Character, onClick: () -> Unit) {
+fun CharacterItem(character: CharacterResponseDto.Character, onClick: () -> Unit, onLongClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable(onClick = onClick)
+            .combinedClickable(
+                onClick = onClick,
+                onLongClick = onLongClick
+            )
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {

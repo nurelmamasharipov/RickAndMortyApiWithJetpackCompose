@@ -1,6 +1,8 @@
 package com.example.rickandmortyapiwithjetpackcompose.ui.navigation
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Face
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
@@ -19,6 +21,8 @@ sealed class BottomNavItem(
 ) {
     object Characters : BottomNavItem("characters", Icons.Default.Person, "Characters")
     object Locations : BottomNavItem("locations", Icons.Default.LocationOn, "Locations")
+    object Episodes : BottomNavItem("episodes", Icons.Default.Face, "Episodes")
+    object Favorite : BottomNavItem("favorite", Icons.Default.Favorite, "Favorites")
 }
 @Composable
 fun BottomNavigationBar(navController: NavHostController) {

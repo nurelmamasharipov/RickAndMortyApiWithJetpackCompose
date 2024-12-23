@@ -5,6 +5,7 @@ import com.example.rickandmortyapiwithjetpackcompose.BuildConfig.BASE_URL
 import com.example.rickandmortyapiwithjetpackcompose.data.api.CharacterApiService
 import com.example.rickandmortyapiwithjetpackcompose.data.api.LocationApiService
 import com.example.rickandmortyapiwithjetpackcompose.data.repository.CharacterRepository
+import com.example.rickandmortyapiwithjetpackcompose.data.repository.EpisodeRepository
 import com.example.rickandmortyapiwithjetpackcompose.data.repository.LocationRepository
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -28,6 +29,8 @@ val dataModule: Module = module {
     single { CharacterRepository(get()) }
 
     single { LocationRepository(get()) }
+
+    single { EpisodeRepository(get()) }
 }
 
 private fun provideOkHttpClient() : OkHttpClient{
