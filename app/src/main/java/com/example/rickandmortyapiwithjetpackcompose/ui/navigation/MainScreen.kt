@@ -9,6 +9,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.rickandmortyapiwithjetpackcompose.ui.screens.character.CharactersViewModel
 import com.example.rickandmortyapiwithjetpackcompose.ui.screens.favorite.FavoriteViewModel
 import com.example.rickandmortyapiwithjetpackcompose.ui.screens.character.detail.CharacterDetailScreen
 import com.example.rickandmortyapiwithjetpackcompose.ui.screens.episode.EpisodeScreen
@@ -22,6 +23,7 @@ fun MainScreen() {
     val navController = rememberNavController()
 
     val favoriteViewModel: FavoriteViewModel = viewModel()
+    val charactersViewModel: CharactersViewModel = viewModel()
 
     Scaffold(
         bottomBar = { BottomNavigationBar(navController) }
@@ -32,7 +34,7 @@ fun MainScreen() {
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(BottomNavItem.Characters.route) {
-                CharacterScreen(navController)
+                CharacterScreen(navController, charactersViewModel, favoriteViewModel)
             }
             composable(BottomNavItem.Locations.route) {
                 LocationScreen(navController)
