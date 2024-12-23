@@ -38,9 +38,10 @@ fun CharacterDetailScreen(characterId: Int?) {
 
     LaunchedEffect(characterId) {
         characterId?.let {
-            val fetchedCharacter = viewModel.fetchCharacterById(it)
-            character.value = fetchedCharacter
-            isLoading.value = false
+            viewModel.fetchCharacterById(it) { fetchedCharacter ->
+                character.value = fetchedCharacter
+                isLoading.value = false
+            }
         }
     }
 
