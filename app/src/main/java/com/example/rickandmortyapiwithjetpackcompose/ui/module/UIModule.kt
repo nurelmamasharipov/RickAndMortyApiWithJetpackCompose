@@ -4,6 +4,7 @@ import com.example.rickandmortyapiwithjetpackcompose.ui.screens.character.Charac
 import com.example.rickandmortyapiwithjetpackcompose.ui.screens.character.detail.CharacterDetailViewModel
 import com.example.rickandmortyapiwithjetpackcompose.ui.screens.episode.EpisodesViewModel
 import com.example.rickandmortyapiwithjetpackcompose.ui.screens.episode.detail.EpisodeDetailViewModel
+import com.example.rickandmortyapiwithjetpackcompose.ui.screens.favorite.FavoriteViewModel
 import com.example.rickandmortyapiwithjetpackcompose.ui.screens.location.LocationViewModel
 import com.example.rickandmortyapiwithjetpackcompose.ui.screens.location.detail.LocationDetailViewModel
 import org.koin.core.module.Module
@@ -17,5 +18,5 @@ val uiModule: Module = module {
     viewModel { LocationDetailViewModel(get()) }
     viewModel { EpisodesViewModel(get()) }
     viewModel { EpisodeDetailViewModel(get()) }
-
+    viewModel { FavoriteViewModel(get()) }
 }
