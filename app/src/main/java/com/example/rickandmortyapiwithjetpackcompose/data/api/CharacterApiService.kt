@@ -5,12 +5,15 @@ import com.example.rickandmortyapiwithjetpackcompose.data.dto.location.LocationR
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface CharacterApiService {
 
     @GET("character")
-    suspend fun fetchAllCharacters(): Response<CharacterResponseDto>
+    suspend fun fetchAllCharacters(
+        @Query("page") page: Int
+    ): CharacterResponseDto
 
     @GET("character/{id}")
-    suspend fun fetchCharacterById(@Path("id") characterId: Int): Response<CharacterResponseDto.Character>
+    suspend fun fetchCharacterById(@Path("id") characterId: Int): CharacterResponseDto
 }

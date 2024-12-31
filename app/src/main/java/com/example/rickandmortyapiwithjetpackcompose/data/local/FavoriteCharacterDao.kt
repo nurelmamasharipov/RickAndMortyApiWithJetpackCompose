@@ -9,11 +9,11 @@ import androidx.room.Query
 interface FavoriteCharacterDao {
 
     @Insert
-    suspend fun addCharacterToFavorites(character: FavoriteCharacter)
+    suspend fun addCharacterToFavorites(character: FavoriteCharacterEntity)
 
     @Delete
-    suspend fun removeCharacterFromFavorites(character: FavoriteCharacter)
+    suspend fun removeCharacterFromFavorites(character: FavoriteCharacterEntity)
 
     @Query("SELECT * FROM favorite_characters")
-    suspend fun getAllFavoriteCharacters(): List<FavoriteCharacter>
+    suspend fun getAllFavoriteCharacters(): List<FavoriteCharacterEntity>
 }

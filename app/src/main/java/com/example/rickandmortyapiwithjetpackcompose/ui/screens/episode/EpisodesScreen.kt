@@ -28,8 +28,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.paging.LoadState
+import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.rememberAsyncImagePainter
-import com.example.rickandmortyapiwithjetpackcompose.data.dto.character.CharacterResponseDto
 import com.example.rickandmortyapiwithjetpackcompose.data.dto.episodes.EpisodesResponseDto
 import org.koin.androidx.compose.koinViewModel
 import org.koin.androidx.compose.navigation.koinNavViewModel
@@ -39,28 +40,39 @@ fun EpisodeScreen(
     navController: NavHostController,
     viewModel: EpisodesViewModel = koinViewModel()
 ) {
-
-
-    val episodes = remember { mutableStateOf<List<EpisodesResponseDto.Episodes>>(emptyList()) }
+    val episodes = viewModel.episodesPager.collectAsLazyPagingItems()
     val isLoading = remember { mutableStateOf(true) }
 
-    LaunchedEffect(Unit) {
-        viewModel.fetchAllEpisodes()
-    }
 
     if (isLoading.value) {
         Box(
-            modifier = Modifier
-                .fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
             CircularProgressIndicator()
         }
     } else {
         LazyColumn {
-            items(episodes.value) { episode ->
-                EpisodeItem(episode = episode) {
-                    navController.navigate("character_detail/${episode.id}")
+            items(episodes) { episode ->
+                episode?.let {
+                    EpisodeItem(episode = it) {
+                        navController.navigate("episode_detail/${it.id}")
+                    }
+                }
+            }
+
+            when {
+                episodes.loadState.append is LoadState.Loading -> {
+                    item {
+                        Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                            CircularProgressIndicator()
+                        }
+                    }
+                }
+                episodes.loadState.append is LoadState.Error -> {
+                    item {
+                        Text(text = "Error loading more episodes")
+                    }
                 }
             }
         }

@@ -77,6 +77,7 @@ dependencies {
     implementation(libs.koin.androidx.compose)
     implementation(libs.koin.androidx.compose.navigation)
     implementation(libs.koin.android)
+    implementation (libs.androidx.lifecycle.viewmodel.compose)
 
     //Retrofit
     implementation(libs.retrofit)
@@ -92,6 +93,15 @@ dependencies {
 
     //Room
     implementation (libs.androidx.room.runtime)
-    kapt (libs.androidx.room.compiler)
+    kapt (platform(libs.androidx.room.compiler))
     implementation (libs.androidx.room.ktx)
+
+    //Paging 3
+    implementation (libs.androidx.paging.runtime)
+    implementation (libs.androidx.paging.compose)
+
+
+    //Animation
+    implementation (libs.accompanist.navigation.animation)
+
 }
