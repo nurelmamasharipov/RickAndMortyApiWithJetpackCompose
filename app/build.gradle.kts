@@ -99,5 +99,9 @@ dependencies {
     //Paging 3
     implementation (libs.androidx.paging.runtime)
     implementation (libs.androidx.paging.compose)
-    implementation ("androidx.paging:paging-compose:3.2.0")
+
+
+    //Animation
+    implementation (libs.accompanist.navigation.animation)
+
 }

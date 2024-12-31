@@ -1,6 +1,11 @@
 package com.example.rickandmortyapiwithjetpackcompose.ui.navigation
 
 import CharacterScreen
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -17,7 +22,9 @@ import com.example.rickandmortyapiwithjetpackcompose.ui.screens.episode.detail.E
 import com.example.rickandmortyapiwithjetpackcompose.ui.screens.favorite.FavoriteScreen
 import com.example.rickandmortyapiwithjetpackcompose.ui.screens.location.LocationScreen
 import com.example.rickandmortyapiwithjetpackcompose.ui.screens.location.detail.LocationDetailScreen
+import com.google.accompanist.navigation.animation.AnimatedNavHost
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
@@ -28,10 +35,22 @@ fun MainScreen() {
     Scaffold(
         bottomBar = { BottomNavigationBar(navController) }
     ) { innerPadding ->
-        NavHost(
+        AnimatedNavHost(
             navController = navController,
             startDestination = BottomNavItem.Characters.route,
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier.padding(innerPadding),
+            enterTransition = {
+                slideInHorizontally(initialOffsetX = { it }) + fadeIn()
+            },
+            exitTransition = {
+                slideOutHorizontally(targetOffsetX = { -it }) + fadeOut()
+            },
+            popEnterTransition = {
+                slideInHorizontally(initialOffsetX = { -it }) + fadeIn()
+            },
+            popExitTransition = {
+                slideOutHorizontally(targetOffsetX = { it }) + fadeOut()
+            }
         ) {
             composable(BottomNavItem.Characters.route) {
                 CharacterScreen(navController, charactersViewModel, favoriteViewModel)
